@@ -1,8 +1,12 @@
 ## make a ttt game
 
 print("Welcome to Tic Tac Toe!")
-username = input("Enter your name: ")
-print(f"Player 1: {username}")
+player1 = input("Enter Player 1 name: ")
+print(f"Player 1: {player1}")
+
+player2 = input("Enter Player 2 name: ")
+print(f"Player 1: {player2}")
+
 
 gameState = True
 moveNum = 0
@@ -33,7 +37,10 @@ def checkWin():
         gameboard[0][0] == gameboard[1][1] == gameboard[2][2] != " " or
         gameboard[0][2] == gameboard[1][1] == gameboard[2][0] != " "):
             printboard()
-            print("You win!")
+            if moveNum % 2 == 0:
+                print(f"{player1} wins!")
+            else:
+                print(f"{player2} wins!")
             gameState = False
 
 m = {
