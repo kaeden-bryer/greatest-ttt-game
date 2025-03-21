@@ -28,6 +28,7 @@ def printboard():
 
 def checkWin():
     global gameState
+    global moveNum
     if (gameboard[0][0] == gameboard[0][1] == gameboard[0][2] != " " or
         gameboard[1][0] == gameboard[1][1] == gameboard[1][2] != " " or 
         gameboard[2][0] == gameboard[2][1] == gameboard[2][2] != " " or
@@ -38,9 +39,32 @@ def checkWin():
         gameboard[0][2] == gameboard[1][1] == gameboard[2][0] != " "):
             printboard()
             if moveNum % 2 == 0:
-                print(f"{player1} wins!")
-            else:
                 print(f"{player2} wins!")
+            else:
+                print(f"{player1} wins!")
+            gameState = False
+    # check if board is full but nobody has won
+    elif moveNum == 9:
+        checkFull()
+
+
+def checkFull():
+    global gameState
+    global moveNum
+    if moveNum == 9:
+        printboard()
+        print("Cat's game! It's a tie!")
+        redo = input("Play again? (y/n): ")
+        while redo.lower() not in ["y", "n"]:
+            redo = input("Invalid input. Play again? (y/n): ")
+        if redo.lower() == "y":
+            for i in range(3):
+                for j in range(3):
+                    gameboard[i][j] = " "
+            moveNum = 0
+            print("Starting a new game!")
+            gameState = True
+        elif redo.lower() == "n":
             gameState = False
 
 m = {
