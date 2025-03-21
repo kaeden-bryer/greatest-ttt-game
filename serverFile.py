@@ -47,16 +47,18 @@ def connectUsers():
 
 #Disconnects the users and waits for new players
 def disconnectUsers():
-    global conn1, conn2, addr1, addr2, game
+    global conn1, conn2
     conn1.close()
     conn2.close()
 
 #User Turns
 def gameplay():
     player2move = conn2.recv(1024)
-    userturn(player2move, player1)
+    userTurn(player2move, player1)
+    print("[+] Player 2 played")
     player1move = conn1.recv(1024)
-    userturn(player1move, player2)
+    userTurn(player1move, player2)
+    print("[+] Player 1 played")
 
 #initialize the game
 def resetGame():
@@ -100,7 +102,7 @@ def printboard():
     print("-------------")
 
 #add user turn to board
-def userturn(playermove, player):
+def userTurn(playermove, player):
     global move
     if  (0< playermove < 10) and (playermove%1 == 0):
         if player == 1 :
