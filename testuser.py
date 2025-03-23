@@ -1,7 +1,7 @@
 import socket
 import struct
 
-ip = "192.168.0.201"
+ip = "192.168.0.201" #Change to device that's hosting the serverFile.py
 port = 2470
 move = 0
 
