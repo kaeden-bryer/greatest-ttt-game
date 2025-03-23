@@ -120,7 +120,7 @@ while (gameState):
     while not square.isdigit() or int(square) < 1 or int(square) > 9:
         print("Invalid input. Please enter a number between 1 and 9.")
         square = input("Enter square number (1-9): ")
-    client_socket.sendall(struct.pack('!Q', square))
+    client_socket.sendall(struct.pack('!Q', int(square)))
     updateBoard(square)
 
     #check if player has won
