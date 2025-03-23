@@ -55,20 +55,26 @@ def disconnectUsers():
 
 #User Turns
 def gameplay():
-    global conn1, conn2
-    if conn1 is not None and conn2 is not None:
+    global conn2
+    if conn2 is not None:
         conn2.sendall(struct.pack('!B', 1))
         player2move = struct.unpack('!B', conn2.recv(8))[0]
         userTurn(player2move, player1)
+        print("[+] Player 1 played")
         printboard()
-        print("[+] Player 2 played")
+    else:
+        print("[!] Player 1 Error")
+
+def gameplay2():
+    global conn1
+    if conn1 is not None:
         conn1.sendall(struct.pack('!B', 1))
         player1move = struct.unpack('!B', conn1.recv(8))[0]
         userTurn(player1move, player2)
+        print("[+] Player 2 played")
         printboard()
-        print("[+] Player 1 played")
     else:
-        print("[!] Error")
+        print("[!] Player 2 Error")
 
 #initialize the game
 def resetGame():
@@ -97,9 +103,9 @@ def checkWin():
         gameboard[0][2] == gameboard[1][2] == gameboard[2][2] != " " or
         gameboard[0][0] == gameboard[1][1] == gameboard[2][2] != " " or
         gameboard[0][2] == gameboard[1][1] == gameboard[2][0] != " "):
-        return False
-    else :
         return True
+    else :
+        return False
 
 #To keep track of game in console
 def printboard():
@@ -121,20 +127,30 @@ def userTurn(playermove, player):
         position =m[str(playermove)]
         if  gameboard[position[0]][position[1]] == " ":
             gameboard[position[0]][position[1]] = char
-            move = + 1
         else:
             print(f"[+] Player{player} has made an invalid move {position}")
 
+def sendWin(ttt_winner):
+    global conn1, conn2
+    if conn1 is not None and conn2 is not None:
+        if ttt_winner == 1:
+            conn2.sendall(struct.pack('!B', 12))
+            conn1.sendall(struct.pack('!B', 11))
+        if ttt_winner == 2:
+            conn2.sendall(struct.pack('!B', 11))
+            conn1.sendall(struct.pack('!B', 12))
+
+
 #ask both users if they wanna play again
 def endOfGame():
-    global playagain
+    global playagain, conn1, conn2
     print(f"[+] Game Ended")
     print("[+] Asking both users if they want to play again")
-    conn1.sendall(struct.pack('!B', 1))
+    conn1.sendall(struct.pack('!B', 15))
     player1response_data = conn1.recv(8)[0]
     player1response = struct.unpack('!B', player1response_data)[0]
 
-    conn2.sendall(struct.pack('!B', 1))
+    conn2.sendall(struct.pack('!B', 15))
     player2response_data = conn2.recv(8)[0]
     player2response = struct.unpack('!B', player2response_data)[0]
 
@@ -157,7 +173,14 @@ while game:
     while True:
         print(f"[+] Moves Played: {move}")
         gameplay()
-        if move > 5:
-            if checkWin():
-                break
+        if checkWin():
+            print("[+] Player 2 Wins")
+            ttt_winner = 2
+            break
+        gameplay2()
+        if checkWin():
+            print("[+] Player 1 Wins")
+            ttt_winner = 1
+            break
+    endOfGame()
 

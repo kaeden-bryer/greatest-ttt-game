@@ -15,11 +15,22 @@ def turn():
     print(f"Client received {server_sent_data}")
     server_sent = struct.unpack('!B', server_sent_data)[0]
     print(f"Server sent {server_sent}")
-    user_input = int(input("Enter your move: "))
+    if server_sent == 11:
+        print("You Win!!!")
+        return 0
+    if server_sent == 12:
+        print("You Lose!!!")
+        return 0
+    if server_sent == 15:
+        print("Would you like to play again?")
+        user_input = int(input("Enter 1 for Yes or 2 for No: "))
+    else:
+        user_input = int(input("Enter your move: "))
     client_socket.send(struct.pack('!B', user_input))
 
 
-while move < 6:
+while True:
     turn()
     move+=1
+    print(f"Move {move}")
 
