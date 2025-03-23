@@ -55,6 +55,7 @@ def disconnectUsers():
 
 #User Turns
 def gameplay():
+    global conn1, conn2
     if conn1 is not None and conn2 is not None:
         player2move = conn2.recv(1024)
         userTurn(player2move, player1)
@@ -62,6 +63,8 @@ def gameplay():
         player1move = conn1.recv(1024)
         userTurn(player1move, player2)
         print("[+] Player 1 played")
+    else:
+        print("[!] Error")
 
 #initialize the game
 def resetGame():
