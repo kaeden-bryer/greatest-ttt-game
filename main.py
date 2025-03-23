@@ -1,4 +1,6 @@
 ## make a ttt game
+import socket
+import struct
 
 print("Welcome to Tic Tac Toe!")
 player1 = input("Enter Player 1 name: ")
@@ -16,6 +18,13 @@ gameboard = [
     [" ", " ", " "],
     [" ", " ", " "]
 ]
+
+port = 2470
+ip = "192.168.0.201"
+#client connect
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect(("ip", port))
+print(f"Client successfully connected to {ip}:{port}")
 
 def printboard():
         print("-------------")
@@ -98,6 +107,9 @@ while (gameState):
     print("Current board:")
     printboard()
 
+    #Implement making a code to play with ea later..
+    server_sent_data = client_socket.recv(8)
+    server_sent = struct.unpack('!Q', server_sent_data)
     print("\nSelect which square you would like to place your character (1-9)!")
 
     square = input("Enter square number (1-9): ")
@@ -105,7 +117,7 @@ while (gameState):
     while not square.isdigit() or int(square) < 1 or int(square) > 9:
         print("Invalid input. Please enter a number between 1 and 9.")
         square = input("Enter square number (1-9): ")
-
+    client_socket.sendall(struct.pack('!Q', square))
     updateBoard(square)
 
     #check if player has won
