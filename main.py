@@ -2,13 +2,16 @@
 import socket
 import struct
 
+"""
 print("Welcome to Tic Tac Toe!")
 player1 = input("Enter Player 1 name: ")
 print(f"Player 1: {player1}")
 
 player2 = input("Enter Player 2 name: ")
 print(f"Player 1: {player2}")
-
+"""
+player1 = "test1"
+player2 = "test2"
 
 gameState = True
 moveNum = 0

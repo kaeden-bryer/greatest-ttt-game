@@ -57,9 +57,11 @@ def disconnectUsers():
 def gameplay():
     global conn1, conn2
     if conn1 is not None and conn2 is not None:
+        conn2.sendall(struct.pack('!Q', 1))
         player2move = conn2.recv(1024)
         userTurn(player2move, player1)
         print("[+] Player 2 played")
+        conn1.sendall(struct.pack('!Q', 1))
         player1move = conn1.recv(1024)
         userTurn(player1move, player2)
         print("[+] Player 1 played")
