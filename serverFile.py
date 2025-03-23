@@ -5,7 +5,6 @@ from random import randint
 
 #Initialize all
 port = 2470
-port2 = 2999
 player1 = 1
 player2 = 2
 move = 0
@@ -38,15 +37,12 @@ m = {
 def connectUsers():
     global conn1, conn2, addr1, addr2, game
     s_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s_socket.bind(('0.0.0.0', port))
-    s_socket.listen(2)
-    s_socket2.bind(('0.0.0.0', port2))
-    s_socket2.listen(2)
+    s_socket.listen()
 
     conn1, addr1 = s_socket.accept()
     print(f"[+] Player 1 connected: {addr1}, Waiting for Player 2")
-    conn2, addr2 = s_socket2.accept()
+    conn2, addr2 = s_socket.accept()
     print(f"[+] Player 2 connected: {addr2}, Game Starting")
     game = True
 
@@ -59,8 +55,7 @@ def disconnectUsers():
 
 #User Turns
 def gameplay():
-
-    if conn2 is not None and conn1 is not None:
+    if conn1 is not None and conn2 is not None:
         player2move = conn2.recv(1024)
         userTurn(player2move, player1)
         print("[+] Player 2 played")
