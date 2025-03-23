@@ -112,7 +112,7 @@ while (gameState):
 
     #Implement making a code to play with ea later..
     server_sent_data = client_socket.recv(8)
-    server_sent = struct.unpack('!Q', server_sent_data)
+    server_sent = struct.unpack('!B', server_sent_data)
     print("\nSelect which square you would like to place your character (1-9)!")
 
     square = input("Enter square number (1-9): ")
@@ -120,7 +120,7 @@ while (gameState):
     while not square.isdigit() or int(square) < 1 or int(square) > 9:
         print("Invalid input. Please enter a number between 1 and 9.")
         square = input("Enter square number (1-9): ")
-    client_socket.sendall(struct.pack('!Q', int(square)))
+    client_socket.sendall(struct.pack('!B', int(square)))
     updateBoard(square)
 
     #check if player has won

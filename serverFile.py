@@ -57,12 +57,12 @@ def disconnectUsers():
 def gameplay():
     global conn1, conn2
     if conn1 is not None and conn2 is not None:
-        conn2.sendall(struct.pack('!Q', 1))
-        player2move = struct.unpack('!Q', conn2.recv(8))
+        conn2.sendall(struct.pack('!B', 1))
+        player2move = struct.unpack('!B', conn2.recv(8))
         userTurn(player2move, player1)
         print("[+] Player 2 played")
-        conn1.sendall(struct.pack('!Q', 1))
-        player1move = struct.unpack('!Q', conn1.recv(8))
+        conn1.sendall(struct.pack('!B', 1))
+        player1move = struct.unpack('!B', conn1.recv(8))
         userTurn(player1move, player2)
         print("[+] Player 1 played")
     else:
@@ -129,13 +129,13 @@ def endOfGame():
     global playagain
     print(f"[+] Game Ended")
     print("[+] Asking both users if they want to play again")
-    conn1.sendall(struct.pack('!Q', 1))
+    conn1.sendall(struct.pack('!B', 1))
     player1response_data = conn1.recv(8)[0]
-    player1response = struct.unpack('!Q', player1response_data)[0]
+    player1response = struct.unpack('!B', player1response_data)[0]
 
-    conn2.sendall(struct.pack('!Q', 1))
+    conn2.sendall(struct.pack('!B', 1))
     player2response_data = conn2.recv(8)[0]
-    player2response = struct.unpack('!Q', player2response_data)[0]
+    player2response = struct.unpack('!B', player2response_data)[0]
 
     if player1response == 1 and player2response == 1:
         playagain = True
