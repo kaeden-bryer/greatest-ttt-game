@@ -147,14 +147,12 @@ def endOfGame():
     print(f"[+] Game Ended")
     print("[+] Asking both users if they want to play again")
     conn1.sendall(struct.pack('!B', 15))
-    player1response_data = conn1.recv(8)[0]
-    player1response = struct.unpack('!B', player1response_data)[0]
+    player1choice = struct.unpack('!B', conn1.recv(8))[0]
 
     conn2.sendall(struct.pack('!B', 15))
-    player2response_data = conn2.recv(8)[0]
-    player2response = struct.unpack('!B', player2response_data)[0]
+    player2choice = struct.unpack('!B', conn2.recv(8))[0]
 
-    if player1response == 1 and player2response == 1:
+    if player2choice == 1 and player1choice == 1:
         playagain = True
     else:
         playagain = False
@@ -175,12 +173,12 @@ while game:
         gameplay()
         if checkWin():
             print("[+] Player 2 Wins")
-            ttt_winner = 2
+            sendWin(2)
             break
         gameplay2()
         if checkWin():
             print("[+] Player 1 Wins")
-            ttt_winner = 1
+            sendWin(1)
             break
     endOfGame()
 
