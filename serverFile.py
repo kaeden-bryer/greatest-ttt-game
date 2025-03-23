@@ -13,7 +13,7 @@ conn2 = None
 addr1 = None
 addr2 = None
 game = True
-playagain = True
+playagain = False
 
 
 gameboard = [
@@ -48,8 +48,9 @@ def connectUsers():
 #Disconnects the users and waits for new players
 def disconnectUsers():
     global conn1, conn2
-    conn1.close()
-    conn2.close()
+    if conn1 is not None and conn2 is not None:
+        conn1.close()
+        conn2.close()
 
 #User Turns
 def gameplay():
