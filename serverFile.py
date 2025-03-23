@@ -58,12 +58,14 @@ def gameplay():
     global conn1, conn2
     if conn1 is not None and conn2 is not None:
         conn2.sendall(struct.pack('!B', 1))
-        player2move = struct.unpack('!B', conn2.recv(8))
+        player2move = struct.unpack('!B', conn2.recv(8))[0]
         userTurn(player2move, player1)
+        printboard()
         print("[+] Player 2 played")
         conn1.sendall(struct.pack('!B', 1))
-        player1move = struct.unpack('!B', conn1.recv(8))
+        player1move = struct.unpack('!B', conn1.recv(8))[0]
         userTurn(player1move, player2)
+        printboard()
         print("[+] Player 1 played")
     else:
         print("[!] Error")
@@ -111,18 +113,17 @@ def printboard():
 
 #add user turn to board
 def userTurn(playermove, player):
-    global move
     if  (0< playermove < 10) and (playermove%1 == 0):
         if player == 1 :
             char = "x"
         else :
             char = "o"
-        position =m[playermove]
+        position =m[str(playermove)]
         if  gameboard[position[0]][position[1]] == " ":
             gameboard[position[0]][position[1]] = char
+            move = + 1
         else:
             print(f"[+] Player{player} has made an invalid move {position}")
-        move =+ 1
 
 #ask both users if they wanna play again
 def endOfGame():
@@ -154,7 +155,6 @@ while game:
     print(f"[+] Player 1 {player1} Connected, Player 2 {player2} Connected")
     print("[+] Beginning...")
     while True:
-        printboard()
         print(f"[+] Moves Played: {move}")
         gameplay()
         if move > 5:

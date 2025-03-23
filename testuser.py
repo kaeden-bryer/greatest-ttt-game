@@ -13,10 +13,10 @@ print(f"Client successfully connected to {ip}:{port}")
 def turn():
     server_sent_data = client_socket.recv(8)
     print(f"Client received {server_sent_data}")
-    server_sent = struct.unpack('!Q', server_sent_data)[0]
+    server_sent = struct.unpack('!B', server_sent_data)[0]
     print(f"Server sent {server_sent}")
     user_input = int(input("Enter your move: "))
-    client_socket.send(struct.pack('!Q', user_input))
+    client_socket.send(struct.pack('!B', user_input))
 
 
 while move < 6:
