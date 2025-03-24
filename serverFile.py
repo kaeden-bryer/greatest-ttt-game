@@ -1,6 +1,6 @@
 import socket
 import struct
-import random
+import pickle
 from random import randint
 
 #Initialize all
@@ -109,6 +109,8 @@ def checkWin():
 
 #To keep track of game in console
 def printboard():
+    global conn1, conn2
+
     print("-------------")
     print(f"| {gameboard[0][0]} | {gameboard[0][1]} | {gameboard[0][2]} |")
     print("-------------")
@@ -116,6 +118,13 @@ def printboard():
     print("-------------")
     print(f"| {gameboard[2][0]} | {gameboard[2][1]} | {gameboard[2][2]} |")
     print("-------------")
+
+    if conn1 is not None and conn2 is not None:
+        data = pickle.dumps(gameboard)
+        conn1.sendall(struct.pack('!B', 14))
+        conn1.sendall(data)
+        conn2.sendall(struct.pack('!B', 14))
+        conn2.sendall(data)
 
 #add user turn to board
 def userTurn(playermove, player):
@@ -129,6 +138,11 @@ def userTurn(playermove, player):
             gameboard[position[0]][position[1]] = char
         else:
             print(f"[+] Player{player} has made an invalid move {position}")
+    else:
+        if player == 1 :
+            conn2.sendall(struct.pack('!B', 13))
+        elif player == 2 :
+            conn1.sendall(struct.pack('!B', 13))
 
 def sendWin(ttt_winner):
     global conn1, conn2
@@ -181,4 +195,5 @@ while game:
             sendWin(1)
             break
     endOfGame()
+    resetGame()
 
