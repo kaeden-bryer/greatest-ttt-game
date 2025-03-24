@@ -1,4 +1,5 @@
 ## make a ttt game
+import pickle
 import socket
 import struct
 
@@ -37,6 +38,7 @@ def printboard():
         print("-------------")
         print(f"| {gameboard[2][0]} | {gameboard[2][1]} | {gameboard[2][2]} |")
         print("-------------")
+
 
 def checkWin():
     global gameState

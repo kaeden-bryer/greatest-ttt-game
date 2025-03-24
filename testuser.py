@@ -28,6 +28,7 @@ def turn():
         user_input = int(input("Invalid choice... Please go again: "))
     if server_sent == 14: #receiving game board
         print("Game Boards: \n")
+        getGrid()
     if server_sent == 15:
         print("Would you like to play again?")
         user_input = int(input("Enter 1 for Yes or 2 for No: "))
@@ -38,7 +39,7 @@ def turn():
 def getGrid():
     data = b""
     while True:
-        packet = client_socket.recv(4096)
+        packet = client_socket.recv(4096)[0]
         if not packet:
             break
         data += packet
