@@ -10,7 +10,7 @@ FILENAME = "users.txt"
 
 def load_users():
     if not os.path.exists(FILENAME):
-        reutrn {}
+        return {}
     with open(FILENAME, "r") as f:
         return json.load(f)
     
@@ -28,7 +28,8 @@ def valid_password(password):
         any(char.isdigit() for char in password) and
         any(char in "!@#$%^&*()-_=+" for char in password)
     )
-def hash_passsword(password):
+
+def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 # register a new user
@@ -51,20 +52,26 @@ def register():
             print("Password must be 8+ characters, with a number and a symbol.")
             continue
         break
-    # Log in for an existing user
-    def login():
-        users = load_users()
-        usernmae = input("Enter username: ")
-        password = input("Enter password: ")
+    
+    users[username] = hash_password(password1)
+    save_users(users)
+    print("Registration successful!")
 
-        if username not in users:
-            print("Username not found.")
-            return False
-        
-        if users[username] == hash_passsword(password):
-            print("Login successful!")
-            return True
-        
-        else: 
-            print("Incorrect password.")
-            return False
+# Log in for an existing user
+
+def login():
+    users = load_users()
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    if username not in users:
+        print("Username not found.")
+        return False
+    
+    if users[username] == hash_password(password):
+        print("Login successful!")
+        return True
+    
+    else: 
+        print("Incorrect password.")
+        return False
