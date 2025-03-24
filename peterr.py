@@ -51,3 +51,20 @@ def register():
             print("Password must be 8+ characters, with a number and a symbol.")
             continue
         break
+    # Log in for an existing user
+    def login():
+        users = load_users()
+        usernmae = input("Enter username: ")
+        password = input("Enter password: ")
+
+        if username not in users:
+            print("Username not found.")
+            return False
+        
+        if users[username] == hash_passsword(password):
+            print("Login successful!")
+            return True
+        
+        else: 
+            print("Incorrect password.")
+            return False
