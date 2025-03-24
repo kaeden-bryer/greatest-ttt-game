@@ -1,6 +1,5 @@
 import socket
 import struct
-import pickle
 from random import randint
 
 #Initialize all
@@ -109,7 +108,6 @@ def checkWin():
 
 #To keep track of game in console
 def printboard():
-    global conn1, conn2
 
     print("-------------")
     print(f"| {gameboard[0][0]} | {gameboard[0][1]} | {gameboard[0][2]} |")
@@ -118,13 +116,6 @@ def printboard():
     print("-------------")
     print(f"| {gameboard[2][0]} | {gameboard[2][1]} | {gameboard[2][2]} |")
     print("-------------")
-
-    if conn1 is not None and conn2 is not None:
-        data = pickle.dumps(gameboard)
-        conn1.sendall(struct.pack('!B', 14))
-        conn1.sendall(data)
-        conn2.sendall(struct.pack('!B', 14))
-        conn2.sendall(data)
 
 #add user turn to board
 def userTurn(playermove, player):
