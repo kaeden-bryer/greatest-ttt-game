@@ -1,18 +1,35 @@
-from peterr import register, login
+from peterr import register, login, show_leaderboard
 
-print("1. Register\n2. Login")
+def main():
+    print("\n1. Register")
+    print("2. Login")
+    print("3. View Leaderboard")
+    print("4. Exit")
 
-choice = input("Choose: ")
+    choice = input("Choose: ")
 
-# If the user chooses 1, it will have them register
-if choice == "1":
-    register()
-# If user chooses 2, it will have them login
-elif choice == "2":
-    success = login()
-    if not success:
+    # If the user chooses 1, it will have them register
+    if choice == "1":
+        register()
+
+    # If user chooses 2, it will have them login
+    elif choice == "2":
+        user = login()
+        if user:
+            print(f"Welcome, {user}! You are now logged in.")
+    
+    # If the user chooses 3, it will display the leaderboard
+    elif choice == "3":
+        show_leaderboard()
+
+    # If the user chooses 4, it will exit them out the program
+    elif choice == "4":
+        print("Goodbye!")
         exit()
-# If the user enters anything other than 1 or 2
-else: 
-    print("Invalid choice.")
-    exit()
+
+    # If user enters anything other than 1–4
+    else:
+        print("Invalid choice.")
+
+while True:
+    main()

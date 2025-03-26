@@ -1,24 +1,23 @@
+import sqlite3
 import hashlib
-import os
-import json
 
 # please let me know what must be fixed/improved
 
-FILENAME = "users.txt"
+# connect to sqlite database (creates users.db if it doesn't exist)
+conn = sqlite3.connect("users.db")
+cursor = conn.cursor()
 
-# load users from the database
-
-def load_users():
-    if not os.path.exists(FILENAME):
-        return {}
-    with open(FILENAME, "r") as f:
-        return json.load(f)
-    
-# save users to the file
-
-def save_users(users):
-    with open(FILENAME, "w") as f:
-        json.dump(users, f)
+# create users table to store username, password, and game stats
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    username TEXT PRIMARY KEY,
+    password TEXT,
+    wins INTEGER DEFAULT 0,
+    losses INTEGER DEFAULT 0,
+    draws INTEGER DEFAULT 0
+)
+""")
+conn.commit()
 
 # ensure their password meets our security requirements
 
@@ -35,12 +34,14 @@ def hash_password(password):
 # register a new user
 
 def register():
-    users = load_users()
-
     username = input("Enter new username: ").strip()
-    if username in users:
+
+# check if user already exists
+    cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+    if cursor.fetchone():
         print("Username is taken, please enter a different one.")
         return
+
     while True:
         password1 = input("Enter a password: ")
         password2 = input("Confirm password: ")
@@ -53,25 +54,42 @@ def register():
             continue
         break
     
-    users[username] = hash_password(password1)
-    save_users(users)
+    hashed = hash_password(password1)
+    cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed))
+    conn.commit()
     print("Registration successful!")
 
 # Log in for an existing user
 
 def login():
-    users = load_users()
-    username = input("Enter username: ")
-    password = input("Enter password: ")
+    username = input("Enter username: ").strip()
+    password = input("Enter password: ").strip()
+    hashed = hash_password(password)
 
-    if username not in users:
-        print("Username not found.")
-        return False
-    
-    if users[username] == hash_password(password):
+    cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed))
+    if cursor.fetchone():
         print("Login successful!")
-        return True
-    
-    else: 
-        print("Incorrect password.")
-        return False
+        return username  # return username so we know who logged in
+    else:
+        print("Incorrect username or password.")
+        return None
+
+# update stats in the database (for leaderboard)
+
+def update_stats(username, result):
+    if result == "win":
+        cursor.execute("UPDATE users SET wins = wins + 1 WHERE username = ?", (username,))
+    elif result == "loss":
+        cursor.execute("UPDATE users SET losses = losses + 1 WHERE username = ?", (username,))
+    elif result == "draw":
+        cursor.execute("UPDATE users SET draws = draws + 1 WHERE username = ?", (username,))
+    conn.commit()
+
+# display the leaderboard
+
+def show_leaderboard():
+    print("\n🏆 Leaderboard (sorted by wins):")
+    cursor.execute("SELECT username, wins, losses, draws FROM users ORDER BY wins DESC")
+    for rank, row in enumerate(cursor.fetchall(), start=1):
+        user, w, l, d = row
+        print(f"{rank}. {user} | Wins: {w} | Losses: {l} | Draws: {d}")
