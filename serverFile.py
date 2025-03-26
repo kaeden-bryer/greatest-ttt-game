@@ -1,5 +1,6 @@
 import socket
 import struct
+import peterr
 from random import randint
 
 #Initialize all
@@ -179,12 +180,19 @@ while game:
         if checkWin():
             print("[+] Player 2 Wins")
             sendWin(2)
+            peterr.update_stats(player1, "loss")
+            peterr.update_stats(player2, "win")
             break
         gameplay2()
         if checkWin():
             print("[+] Player 1 Wins")
             sendWin(1)
+            peterr.update_stats(player1, "win")
+            peterr.update_stats(player2, "loss")
             break
+        if move == 9:
+            peterr.update_stats(player1, "draw")
+            peterr.update_stats(player2, "draw")
     endOfGame()
     resetGame()
 
