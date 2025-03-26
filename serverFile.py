@@ -140,11 +140,14 @@ def sendWin(ttt_winner):
     global conn1, conn2
     if conn1 is not None and conn2 is not None:
         if ttt_winner == 1:
-            conn2.sendall(struct.pack('!B', 12))
-            conn1.sendall(struct.pack('!B', 11))
+            conn2.sendall(struct.pack('!B', 12)) # Send Loss
+            conn1.sendall(struct.pack('!B', 11)) # Send Win
         if ttt_winner == 2:
-            conn2.sendall(struct.pack('!B', 11))
-            conn1.sendall(struct.pack('!B', 12))
+            conn2.sendall(struct.pack('!B', 11)) # Send Win
+            conn1.sendall(struct.pack('!B', 12)) # Send Loss
+        if ttt_winner == 3:
+            conn2.sendall(struct.pack('!B', 14)) #send Draw
+            conn1.sendall(struct.pack('!B', 14)) #send Draw
 
 
 #ask both users if they wanna play again

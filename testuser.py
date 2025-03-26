@@ -25,6 +25,9 @@ def turn():
         return 0
     if server_sent == 13:
         user_input = int(input("Invalid choice... Please go again: "))
+    if server_sent == 14:
+        print("It's a Draw!!!")
+        return 0
     if server_sent == 15:
         print("Would you like to play again?")
         user_input = int(input("Enter 1 for Yes or 2 for No: "))
