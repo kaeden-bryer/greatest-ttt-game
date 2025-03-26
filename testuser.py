@@ -1,6 +1,5 @@
 import socket
 import struct
-import pickle
 
 ip = "44.201.187.226" #Change to device that's hosting the serverFile.py
 port = 2470
