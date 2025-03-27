@@ -35,7 +35,7 @@ def printboard():
     print(f"| {gameboard[2][0]} | {gameboard[2][1]} | {gameboard[2][2]} |")
     print("-------------")
 
-def updateBoard(gameboard, num):
+def updateBoard(num):
     global move
     char = "X" if move % 2 == 0 else "O"
 
@@ -43,7 +43,6 @@ def updateBoard(gameboard, num):
     if gameboard[position[0]][position[1]] == " ":
         gameboard[position[0]][position[1]] = char
         move += 1
-        return gameboard
     else:
         print("Square already taken. Try again.")
         square = input("Enter square number (1-9): ")
@@ -56,14 +55,15 @@ def turn():
     server_sent = struct.unpack('!B', server_sent_data)[0]
     print(f"Server sent {server_sent}")
     #depending on server response client side will react accordingly
+
     if 1 <= server_sent <= 9:
         print(f"Other player played: {server_sent}")
-        gameboard = updateBoard(gameboard, server_sent)
+        updateBoard(server_sent)
         printboard()
     if server_sent == 10:
         user_input = int(input("Enter your move: "))
         client_socket.send(struct.pack('!B', user_input))
-        move+=1
+        updateBoard(user_input)
         printboard()
     if server_sent == 11: #W
         print("You Win!!!")
