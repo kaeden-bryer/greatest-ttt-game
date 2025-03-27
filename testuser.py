@@ -27,6 +27,8 @@ m = {
 }
 
 def printboard():
+    global gameboard
+
     print("-------------")
     print(f"| {gameboard[0][0]} | {gameboard[0][1]} | {gameboard[0][2]} |")
     print("-------------")
@@ -37,6 +39,8 @@ def printboard():
 
 def updateBoard(num):
     global move
+    global gameboard
+    
     char = "X" if move % 2 == 0 else "O"
 
     position = m[str(num)]
