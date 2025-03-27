@@ -63,13 +63,14 @@ def turn():
             move += 1
             print("Updated board:")
             printboard(gameboard)
+            client_socket.send(struct.pack('!B', str(user_input)))
+            print(f"Sent {user_input} to server")
         else:
             char = "X" if move % 2 == 0 else "O"
             position = m[str(server_sent)]
             gameboard[position[0]][position[1]] = char
 
-        client_socket.send(struct.pack('!B', user_input))
-        print(f"Sent {user_input} to server")
+        
 
     except (socket.error, struct.error) as e:
         print(f"Socket error: {e}")

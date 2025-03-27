@@ -60,7 +60,7 @@ def gameplay():
 
     if conn2 is not None and conn1 is not None:
         conn2.sendall(struct.pack('!B', 10))
-        player2move = struct.unpack('!B', conn2.recv(8))[0]
+        player2move = struct.unpack('!B', conn2.recv(1))[0]
         print(f"Player 2 move is {player2move}")
 
         userTurn(player2move)
@@ -78,7 +78,7 @@ def gameplay2():
 
     if conn1 is not None and conn2 is not None:
         conn1.sendall(struct.pack('!B', 10))
-        player1move = struct.unpack('!B', conn1.recv(8))[0]
+        player1move = struct.unpack('!B', conn1.recv(1))[0]
         print(f"Player 1 move is {player1move}")
 
         userTurn(player1move)
@@ -144,6 +144,10 @@ def userTurn(playermove):
     global move
     char = "X" if move % 2 == 0 else "O"
     print(f"Player played {playermove}")
+
+    if str(playermove) not in m:
+        print(f"[!] Invalid move received: {playermove}")
+        return  # Ignore invalid moves
     
     position = m[str(playermove)]
     if  gameboard[position[0]][position[1]] == " ":
