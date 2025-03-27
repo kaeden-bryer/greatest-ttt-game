@@ -16,7 +16,11 @@ def turn():
     server_sent = struct.unpack('!B', server_sent_data)[0]
     print(f"Server sent {server_sent}")
     #depending on server response client side will react accordingly
-
+    if 1 <= server_sent <= 9:
+        print(f"Other player played: {server_sent}")
+    if server_sent == 10:
+        user_input = int(input("Enter your move: "))
+        client_socket.send(struct.pack('!B', user_input))
     if server_sent == 11: #W
         print("You Win!!!")
         return 0
@@ -25,6 +29,7 @@ def turn():
         return 0
     if server_sent == 13:
         user_input = int(input("Invalid choice... Please go again: "))
+        client_socket.send(struct.pack('!B', user_input))
     if server_sent == 14:
         print("It's a Draw!!!")
         return 0
@@ -32,8 +37,7 @@ def turn():
         print("Would you like to play again?")
         user_input = int(input("Enter 1 for Yes or 2 for No: "))
     else:
-        user_input = int(input("Enter your move: "))
-    client_socket.send(struct.pack('!B', user_input))
+        print("Server send an invalid code")
 
 
 
