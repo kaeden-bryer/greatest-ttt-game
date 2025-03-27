@@ -58,7 +58,7 @@ def gameplay():
     # added conn1 so the server can send player2's move to player1
     global conn1
     if conn2 is not None and conn1 is not None:
-        conn2.sendall(struct.pack('!B', 1))
+        conn2.sendall(struct.pack('!B', 10))
         player2move = struct.unpack('!B', conn2.recv(8))[0]
         userTurn(player2move)
         print("[+] Player 1 played")
@@ -71,7 +71,7 @@ def gameplay():
 def gameplay2():
     global conn1
     if conn1 is not None:
-        conn1.sendall(struct.pack('!B', 1))
+        conn1.sendall(struct.pack('!B', 10))
         player1move = struct.unpack('!B', conn1.recv(8))[0]
         userTurn(player1move)
         print("[+] Player 2 played")
