@@ -87,3 +87,5 @@ while True:
     turn()
     move+=1
     print(f"Move {move}")
+
+# i hate my life
