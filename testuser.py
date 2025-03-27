@@ -83,10 +83,7 @@ def turn():
     else:
         print("Server send an invalid code")
 
-
-
 while True:
     turn()
     move+=1
     print(f"Move {move}")
-
