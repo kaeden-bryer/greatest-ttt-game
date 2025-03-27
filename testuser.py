@@ -32,45 +32,48 @@ client_socket.connect((ip, port))
 print(f"Client successfully connected to {ip}:{port}")
 
 def turn():
+    global move
+    user_input = 0
     
-    server_sent_data = client_socket.recv(8)
-    print(f"Client received {server_sent_data}")
-    server_sent = struct.unpack('!B', server_sent_data)[0]
-    print(f"Server sent {server_sent}")
-    #depending on server response client side will react accordingly
+    try:
+        server_sent_data = client_socket.recv(1)
+        if not server_sent_data:
+            print("Connection closed by server.")
+            return 0
 
-    if server_sent == 11: #W
-        print("You Win!!!")
-        return 0
-    if server_sent == 12: #F
-        print("You Lose!!!")
-        return 0
-    if server_sent == 15:
-        print("Would you like to play again?")
-        user_input = int(input("Enter 1 for Yes or 2 for No: "))
-    # I've changed it so that 10 is the signal that it is the users turn. If the user receives nums 1-9, that is the server
-    # sending the opponents move (board number) to the user.
-    if server_sent == 10:
-        print("Current board:")
-        printboard(gameboard)
-        # checking whether this is valid doesn't need to be handled by the server if each user holds a copy of the gameboard. I'll fix this
-        user_input = int(input("Enter your move: "))
-        # update gameboard. updateBoard now returns the updated gameboard
-        gameboard = updateBoard(gameboard, user_input)
-        move += 1
+        server_sent = struct.unpack('!B', server_sent_data)[0]
+        print(f"Server sent {server_sent}")
+
+        if server_sent == 11:  # W
+            print("You Win!!!")
+            return 0
+        elif server_sent == 12:  # F
+            print("You Lose!!!")
+            return 0
+        elif server_sent == 15:
+            print("Would you like to play again?")
+            user_input = int(input("Enter 1 for Yes or 2 for No: "))
+        elif server_sent == 10:
+            print("Current board:")
+            printboard(gameboard)
+            user_input = int(input("Enter your move: "))
+            gameboard = updateBoard(gameboard, user_input)
+            move += 1
+            print("Updated board:")
+            printboard(gameboard)
+        else:
+            char = "X" if move % 2 == 0 else "O"
+            position = m[str(server_sent)]
+            gameboard[position[0]][position[1]] = char
+
         client_socket.send(struct.pack('!B', user_input))
-
-        # testing
-        print("Updated board")
-        printboard(gameboard)
-
-    else:
-        char = "X" if move % 2 == 0 else "O"
-        position = m[server_sent]
-        gameboard[position[0]][position[1]] = char
+    except (socket.error, struct.error) as e:
+        print(f"Socket error: {e}")
+        return 0
 
 while True:
-    turn()
+    if turn() == 0:
+        break
     move+=1
     print(f"Move {move}")
 
