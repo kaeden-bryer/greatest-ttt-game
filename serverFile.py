@@ -1,6 +1,7 @@
 import socket
 import struct
 from random import randint
+import json
 
 #Initialize all
 port = 2470
@@ -127,6 +128,9 @@ def userTurn(playermove, player):
         position =m[str(playermove)]
         if  gameboard[position[0]][position[1]] == " ":
             gameboard[position[0]][position[1]] = char
+            gameboard_json = json.dumps(gameboard)
+            conn1.sendall(gameboard_json.encode())
+            conn2.sendall(gameboard_json.encode())
         else:
             print(f"[+] Player{player} has made an invalid move {position}")
     else:
