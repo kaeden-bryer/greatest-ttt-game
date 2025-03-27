@@ -33,6 +33,7 @@ print(f"Client successfully connected to {ip}:{port}")
 
 def turn():
     global move
+    global gameboard
     user_input = 0
     
     try:
