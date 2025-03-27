@@ -135,6 +135,7 @@ m = {
 def userTurn(playermove):
     global move
     char = "X" if move % 2 == 0 else "O"
+    print(f"Player {char} played {playermove}")
     
     position = m[str(playermove)]
     if  gameboard[position[0]][position[1]] == " ":
