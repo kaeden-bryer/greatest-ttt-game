@@ -58,7 +58,8 @@ def turn():
             print("Current board:")
             printboard(gameboard)
             user_input = int(input("Enter your move: "))
-            gameboard = updateBoard(gameboard, user_input)
+            print("user_input", user_input)
+            gameboard = updateBoard(gameboard, str(user_input))
             move += 1
             print("Updated board:")
             printboard(gameboard)
