@@ -55,11 +55,15 @@ def disconnectUsers():
 #User Turns
 def gameplay():
     global conn2
-    if conn2 is not None:
+    # added conn1 so the server can send player2's move to player1
+    global conn1
+    if conn2 is not None and conn1 is not None:
         conn2.sendall(struct.pack('!B', 1))
         player2move = struct.unpack('!B', conn2.recv(8))[0]
-        userTurn(player2move, player1)
+        userTurn(player2move)
         print("[+] Player 1 played")
+        # send player2's move to player1
+        conn1.sendall(struct.pack('!B', player2move))
         printboard()
     else:
         print("[!] Player 1 Error")
@@ -69,8 +73,10 @@ def gameplay2():
     if conn1 is not None:
         conn1.sendall(struct.pack('!B', 1))
         player1move = struct.unpack('!B', conn1.recv(8))[0]
-        userTurn(player1move, player2)
+        userTurn(player1move)
         print("[+] Player 2 played")
+        # send player1's move to player2
+        conn1.sendall(struct.pack('!B', player1move))
         printboard()
     else:
         print("[!] Player 2 Error")
@@ -85,11 +91,6 @@ def resetGame():
     ]
 
     move = 0
-    player1 = randint(1,2)
-    if player1 == 2:
-        player2 = 1
-    else :
-        player2 = 2
 
 #Check if the user won
 def checkWin():
@@ -108,7 +109,6 @@ def checkWin():
 
 #To keep track of game in console
 def printboard():
-
     print("-------------")
     print(f"| {gameboard[0][0]} | {gameboard[0][1]} | {gameboard[0][2]} |")
     print("-------------")
@@ -117,23 +117,28 @@ def printboard():
     print(f"| {gameboard[2][0]} | {gameboard[2][1]} | {gameboard[2][2]} |")
     print("-------------")
 
+# hashmap that converts square numbers to gameboard coordinates
+m = {
+    "1": (0, 0),
+    "2": (0, 1),
+    "3": (0, 2),
+    "4": (1, 0),
+    "5": (1, 1),
+    "6": (1, 2),
+    "7": (2, 0),
+    "8": (2, 1),
+    "9": (2, 2)
+}
+
 #add user turn to board
-def userTurn(playermove, player):
-    if  (0< playermove < 10) and (playermove%1 == 0):
-        if player == 1 :
-            char = "x"
-        else :
-            char = "o"
-        position =m[str(playermove)]
-        if  gameboard[position[0]][position[1]] == " ":
-            gameboard[position[0]][position[1]] = char
-        else:
-            print(f"[+] Player{player} has made an invalid move {position}")
-    else:
-        if player == 1 :
-            conn2.sendall(struct.pack('!B', 13))
-        elif player == 2 :
-            conn1.sendall(struct.pack('!B', 13))
+# I'll update this so that it doesn't check whether it's valid. This will happen on the user's side
+def userTurn(playermove):
+    global move
+    char = "X" if move % 2 == 0 else "O"
+    
+    position = m[str(playermove)]
+    if  gameboard[position[0]][position[1]] == " ":
+        gameboard[position[0]][position[1]] = char
 
 def sendWin(ttt_winner):
     global conn1, conn2
