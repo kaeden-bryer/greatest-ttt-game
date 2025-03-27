@@ -89,7 +89,7 @@ def update_stats(username, result):
 
 def show_leaderboard():
     print("\n🏆 Leaderboard (sorted by wins):")
-    cursor.execute("SELECT username, wins, losses, draws FROM users ORDER BY wins DESC")
+    cursor.execute("SELECT username, wins, losses, draws FROM users ORDER BY wins DESC LIMIT 10")
     for rank, row in enumerate(cursor.fetchall(), start=1):
         user, w, l, d = row
         print(f"{rank}. {user} | Wins: {w} | Losses: {l} | Draws: {d}")
