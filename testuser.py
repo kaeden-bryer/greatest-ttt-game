@@ -43,7 +43,7 @@ def turn():
             return 0
 
         server_sent = struct.unpack('!B', server_sent_data)[0]
-        print(f"Server sent {server_sent}")
+        print(f"Number sent by server: {server_sent}")
 
         if server_sent == 11:  # W
             print("You Win!!!")
@@ -69,6 +69,8 @@ def turn():
             gameboard[position[0]][position[1]] = char
 
         client_socket.send(struct.pack('!B', user_input))
+        print(f"Sent {user_input} to server")
+
     except (socket.error, struct.error) as e:
         print(f"Socket error: {e}")
         return 0

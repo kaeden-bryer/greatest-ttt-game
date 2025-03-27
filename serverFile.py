@@ -57,9 +57,12 @@ def gameplay():
     global conn2
     # added conn1 so the server can send player2's move to player1
     global conn1
+
     if conn2 is not None and conn1 is not None:
         conn2.sendall(struct.pack('!B', 10))
         player2move = struct.unpack('!B', conn2.recv(8))[0]
+        print(f"Player 2 move is {player2move}")
+
         userTurn(player2move)
         print("[+] Player 1 played")
         # send player2's move to player1
@@ -70,13 +73,18 @@ def gameplay():
 
 def gameplay2():
     global conn1
-    if conn1 is not None:
+    # same as above here
+    global conn2
+
+    if conn1 is not None and conn2 is not None:
         conn1.sendall(struct.pack('!B', 10))
         player1move = struct.unpack('!B', conn1.recv(8))[0]
+        print(f"Player 1 move is {player1move}")
+
         userTurn(player1move)
         print("[+] Player 2 played")
         # send player1's move to player2
-        conn1.sendall(struct.pack('!B', player1move))
+        conn2.sendall(struct.pack('!B', player1move))
         printboard()
     else:
         print("[!] Player 2 Error")
@@ -135,7 +143,7 @@ m = {
 def userTurn(playermove):
     global move
     char = "X" if move % 2 == 0 else "O"
-    print(f"Player {char} played {playermove}")
+    print(f"Player played {playermove}")
     
     position = m[str(playermove)]
     if  gameboard[position[0]][position[1]] == " ":
