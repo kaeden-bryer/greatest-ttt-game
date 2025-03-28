@@ -1,7 +1,7 @@
 import sqlite3
 import hashlib
 
-# sql injection code (enter this as username) : ' UNION SELECT username, password, wins, losses, draws FROM users --
+# sql injection code (enter this as username) : ' UNION SELECT username, password, wins, losses, draws FROM users ORDER BY wins DESC --
 
 # please let me know what must be fixed/improved
 
