@@ -66,9 +66,12 @@ def login():
     password = input("Enter password: ").strip()
     hashed = hash_password(password)
 
-    cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed))
-    if cursor.fetchone():
+    cursor.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{hashed}'")
+    results = cursor.fetchall()
+    if results:
         print("Login successful!")
+        for row in results:
+            print(row)
         return username  # return username so we know who logged in
     else:
         print("Incorrect username or password.")
