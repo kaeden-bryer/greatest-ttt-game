@@ -1,13 +1,12 @@
 import socket
 import struct
+from peterr import register, login, show_leaderboard
 
 ip = "44.201.187.226" #Change to device that's hosting the serverFile.py
 port = 2470
 move = 0
-
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((ip, port))
-print(f"Client successfully connected to {ip}:{port}")
+Menu = True
+client_socket = None
 
 gameboard = [
     [" ", " ", " "],
@@ -54,6 +53,48 @@ def updateBoard(num):
         square = input("Enter square number (1-9): ")
         updateBoard(square)
 
+def menu():
+    global Menu
+    global client_socket
+    print("\n1. Register")
+    print("2. Login")
+    print("3. View Leaderboard")
+    print("4. Exit")
+    print("5. Play Game")
+
+    choice = input("Choose: ")
+
+    # If the user chooses 1, it will have them register
+    if choice == "1":
+        register()
+
+    # If user chooses 2, it will have them login
+    elif choice == "2":
+        user = login()
+        if user:
+            print(f"Welcome, {user}! You are now logged in.")
+    
+    # If the user chooses 3, it will display the leaderboard
+    elif choice == "3":
+        # we gotta figure out how to get the leaderboard from the server. Right now the leaderboard is local
+        show_leaderboard()
+
+    # If the user chooses 4, it will exit them out the program
+    elif choice == "4":
+        print("Goodbye!")
+        exit()
+    
+    elif choice == "5":
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((ip, port))
+        print(f"Client successfully connected to {ip}:{port}")
+        print("Starting Game")
+        Menu = False
+
+    # If user enters anything other than 1–4
+    else:
+        print("Invalid choice.")
+
 def turn():
 
     server_sent_data = client_socket.recv(8)
@@ -90,8 +131,9 @@ def turn():
         print("Server send an invalid code")
 
 while True:
-    turn()
-    move+=1
-    print(f"Move {move}")
-
-# i hate my life
+    if Menu == True:
+        menu()
+    else:
+        turn()
+        move+=1
+        print(f"Move {move}")
