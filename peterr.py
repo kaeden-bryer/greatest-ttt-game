@@ -1,6 +1,8 @@
 import sqlite3
 import hashlib
 
+# sql injection code (enter this as username) : ' UNION SELECT username, password, wins, losses, draws FROM users --
+
 # please let me know what must be fixed/improved
 
 # connect to sqlite database (creates users.db if it doesn't exist)
@@ -60,6 +62,7 @@ def register():
     print("Registration successful!")
 
 # Log in for an existing user
+
 
 def login():
     username = input("Enter username: ").strip()
