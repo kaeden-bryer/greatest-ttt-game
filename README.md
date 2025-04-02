@@ -37,26 +37,25 @@ TCP
 
 **3. Features:**
 o Client Process:
-▪ Connect to the server using an IP address and port.
-▪ Send messages or data to the server.
-▪ Receive responses from the server.
+▪ Connect to the server using IP address "44.201.187.226" and port 2470
+▪ Send user and game data to the server
+▪ Receive updated game status and leaderboard from server
 
 o Server Process:
-▪ Listen on a specific port.
+▪ Listen on port 2470
 ▪ Accept multiple client connections (for TCP).
 ▪ Process the client's request and respond.
-▪ Optionally, log client connections and communications.
 
 **4. Concurrency (TCP):**
 The server is able to handle two clients at once, allowing them to play each other.
 
-*devon can you talk more about this here, and whether it's possible to have more than 2 users?*
+*Devon can you talk more about this here, and whether it's possible to have more than 2 users?*
 
 **5. Error Handling:**
 Implement basic error handling for situations like lost connections,
 invalid inputs, or server overloads.
 
-*devin can you talk about error handling here*
+*Devon can you talk about error handling here*
 
 **6. Security:**
 Implement at least one security feature. Examples include:
