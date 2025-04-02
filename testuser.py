@@ -44,13 +44,11 @@ def updateBoard(num):
     global gameboard
 
     char = "X" if move % 4 == 0 else "O"
-    print(f"Char = {char}")
 
     position = m[str(num)]
     if gameboard[position[0]][position[1]] == " ":
         gameboard[position[0]][position[1]] = char
         move += 1
-        print(f"move = {move}")
     else:
         print("Square already taken. Try again.")
         square = input("Enter square number (1-9): ")
@@ -97,4 +95,3 @@ menu()
 while True:
     turn()
     move+=1
-    print(f"Move {move}")
