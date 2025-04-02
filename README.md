@@ -1,4 +1,4 @@
-# greatest-ttt-game
+# Tic Tac Terminator
 CSI2470 Networks Project
 
 By Devin, Peter and Kaeden
@@ -7,11 +7,13 @@ Group 3 -- Game Server
 ### Description
 A real-time 2 player tic tac toe game that runs in the terminal. The two players are connected over a TCP connection to an AWS EC2 instance through socket programming. In addition, users are able to track their wins/losses and view a leaderboard through a SQL database in the server. 
 
-### How to Compile and Run the Application
-If you have GitHub CLI and Git, clone this repo by running "gh repo clone kaeden-bryer/greatest-ttt-game". If you don't want to clone the entire repo, download the below required files:
+### How to Compile and Run the Application 
+If you have GitHub CLI and Git, clone this repo by running "gh repo clone kaeden-bryer/greatest-ttt-game". If you don't want to clone the entire repo, download the below required files: 
 
 **testuser.py** -- Execute this file by running "python3 testuser.py" in the terminal in a directory with this file to run the game. This file contains all the code necessary to run the program and send game information over sockets.
+
 **serverFile.py** -- This is the file run by the Ubuntu server. Handles client requests and processes information.
+
 **peterr.py** -- This file (courtesy of Peter) contains all the logic behind the user sign-in and database operations.
 
 With these files downloaded, open your terminal and switch into the directory containing these files. Run the command "python3 testuser.py".
@@ -36,15 +38,15 @@ Python and SQLite. Server runs on Ubuntu Server
 TCP
 
 **3. Features:**
-o Client Process:
-▪ Connect to the server using IP address "44.201.187.226" and port 2470
-▪ Send user and game data to the server
-▪ Receive updated game status and leaderboard from server
+Client Process:
+1. Connect to the server using IP address "44.201.187.226" and port 2470
+2. Send user and game data to the server
+3. Receive updated game status and leaderboard from server
 
-o Server Process:
-▪ Listen on port 2470
-▪ Accept multiple client connections (for TCP).
-▪ Process the client's request and respond.
+Server Process:
+1. Listen on port 2470
+2. Accept multiple client connections (for TCP).
+3. Process the client's request and respond.
 
 **4. Concurrency (TCP):**
 The server is able to handle two clients at once, allowing them to play each other.
