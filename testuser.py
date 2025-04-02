@@ -1,9 +1,11 @@
 import socket
 import struct
+from peterrmain import menu
 
 ip = "44.201.187.226" #Change to device that's hosting the serverFile.py
 port = 2470
 move = 0
+GameStart = False
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((ip, port))
@@ -66,32 +68,33 @@ def turn():
         print(f"Other player played: {server_sent}")
         updateBoard(server_sent)
         printboard()
-    if server_sent == 10:
+    elif server_sent == 10:
         user_input = int(input("Enter your move: "))
         client_socket.send(struct.pack('!B', user_input))
         updateBoard(user_input)
         printboard()
-    if server_sent == 11: #W
+    elif server_sent == 11: #W
         print("You Win!!!")
         return 0
-    if server_sent == 12: #F
+    elif server_sent == 12: #F
         print("You Lose!!!")
         return 0
-    if server_sent == 13:
+    elif server_sent == 13:
         user_input = int(input("Invalid choice... Please go again: "))
         client_socket.send(struct.pack('!B', user_input))
-    if server_sent == 14:
+    elif server_sent == 14:
         print("It's a Draw!!!")
         return 0
-    if server_sent == 15:
+    elif server_sent == 15:
         print("Would you like to play again?")
         user_input = int(input("Enter 1 for Yes or 2 for No: "))
     else:
         print("Server send an invalid code")
 
+
+menu()
+
 while True:
     turn()
     move+=1
     print(f"Move {move}")
-
-# i hate my life
