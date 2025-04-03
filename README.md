@@ -1,4 +1,4 @@
-# Tic Tac Terminator
+# Tic Tac Terminator🤖
 CSI2470 Networks Project
 
 By Devin, Peter and Kaeden
